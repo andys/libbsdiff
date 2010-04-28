@@ -1,0 +1,49 @@
+
+libbsddiff: Extracted from bsdiff-4.3 by Andrew Snow (andrew@modulus.org)
+=========================================================================
+
+
+libbsdiff aims to extract the functionality of the bsdiff utility into a
+standalone C library.
+
+This allows you to generate a patch between two blocks of data in memory,
+into a 3rd block of memory, without touching the filesystem.
+
+
+Generate a patch
+----------------
+ 
+The destination buffer for the patch must be preallocated and you pass in
+the maximum size you've allocated and are willing to allow the patch to be.
+
+The function returns the actual amount of memory used for the patch.
+
+Upon errors (due to lack of memory), the function returns 0.
+
+  #include "libbsdiff.h"
+  patch_size = bsdiff(old_data, oldsize, new_data, newsize, patch, max_patchsize);
+
+
+
+Apply a patch
+-------------
+
+A function is provider to let you find out the size of the patch target so
+you know how much memory to allocate in advance.
+
+Upon errors (due to corrupt or invalid patch), the function returns 0.
+
+
+  patched_data = malloc( size_of_patched(patch) );
+  result = bspatch(old_data, oldsize, patch, patch_size, patched_data);
+
+
+
+
+
+
+Contact
+-------
+
+Andrew Snow <andrew@modulus.org>
+
